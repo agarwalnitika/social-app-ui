@@ -18,6 +18,7 @@ import EmojiPicker from "./EmojiPicker";
 import { IconWithToast } from "./IconWithToast";
 import IconWrapper from "./IconWrapper";
 import Modal from "./Modal";
+import "../../index.css";
 
 const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
   const [text, setText] = useState("");
@@ -67,11 +68,13 @@ const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
     <div className="p-[8px] rounded-2xl bg-[#00000008]">
       <div className="rounded-2xl shadow-sm bg-white p-2 w-full">
         {/* Toolbar */}
-        <div className="flex items-center gap-2 justify-between  mx-2 my-1">
-          <div className="flex items-center gap-2 px-2 py-2 rounded-xl bg-[#00000008] ">
-            <select className="rounded-md px-3 py-1 bg-white text-gray-700 text-sm shadow-sm">
+        <div className="flex items-center justify-between gap-2 mx-2 my-1">
+          {/* Scrollable Rich Text Toolbar */}
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar bg-[#00000008] px-2 py-2 rounded-xl flex-grow min-w-0">
+            <select className="rounded-md px-3 py-1 bg-white text-gray-700 text-sm shadow-sm shrink-0">
               <option>Paragraph</option>
             </select>
+
             {[
               <TextBoldIcon key="bold" />,
               <TextItalicIcon key="italic" />,
@@ -91,14 +94,17 @@ const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
               />
             ))}
           </div>
-          <IconWithToast
-            key={"delete"}
-            icon={
-              <IconWrapper bgColor="bg-[#FF000026]" disableInteraction>
-                <DeleteIcon />
-              </IconWrapper>
-            }
-          />
+
+          {/* Fixed Delete Button on Right */}
+          <div className="shrink-0 ml-2">
+            <IconWithToast
+              icon={
+                <IconWrapper bgColor="bg-[#FF000026]" disableInteraction>
+                  <DeleteIcon />
+                </IconWrapper>
+              }
+            />
+          </div>
         </div>
 
         {/* Input */}
