@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import CameraIcon from "../../assets/CameraIcon";
 import DeleteIcon from "../../assets/DeleteIcon";
 import MicIcon from "../../assets/MicIcon";
@@ -21,13 +21,35 @@ import AuthModals from "./AuthModals";
 
 const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
   const [text, setText] = useState("");
-  const [emoji, setEmoji] = useState("☺"); // default emoji
+  const [emoji, setEmoji] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [authModal, setAuthModal] = useState<"signIn" | "signUp" | null>(null);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const emojiPickerRef = useRef<HTMLDivElement>(null);
 
   const { user } = useAuth();
+
+  // Click away listener for emoji picker
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        emojiPickerRef.current &&
+        !emojiPickerRef.current.contains(event.target as Node)
+      ) {
+        setShowEmojiPicker(false);
+      }
+    };
+
+    if (showEmojiPicker) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showEmojiPicker]);
+
   const handlePublish = async () => {
     if (!user) {
       setAuthModal("signIn");
@@ -35,10 +57,6 @@ const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
     }
     if (!text.trim()) {
       setError("Please enter something before posting.");
-      return;
-    }
-    if (emoji === "☺") {
-      setError("Please choose an emoji.");
       return;
     }
 
@@ -59,7 +77,7 @@ const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
     await new Promise((resolve) => setTimeout(resolve, 500));
     onPostPublish(); // trigger reload in FeedPage
     setText(""); // clear input
-    setEmoji("☺");
+    setEmoji("");
     setError("");
     setIsSubmitting(false);
   };
@@ -121,11 +139,14 @@ const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
             onClick={toggleEmojiPicker}
             className="text-xl cursor-pointer hover:text-black flex items-start transition-colors duration-200"
           >
-            {emoji}
+            {emoji ? emoji : "☺"}
           </span>
 
           {showEmojiPicker && (
-            <div className="absolute z-50 top-10 mt-2 left-0 animate-fadeIn">
+            <div
+              ref={emojiPickerRef}
+              className="absolute z-50 top-10 mt-2 left-0 animate-fadeIn"
+            >
               <EmojiPicker
                 onSelect={(e) => {
                   setEmoji(e);
