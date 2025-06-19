@@ -26,9 +26,10 @@ const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [showSignIn, setShowSignIn] = useState(false);
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { user } = useAuth();
-  const handlePublish = () => {
+  const handlePublish = async () => {
     if (!user) {
       setShowSignIn(true);
       return;
@@ -42,6 +43,7 @@ const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
       return;
     }
 
+    setIsSubmitting(true);
     const newPost: Post = {
       id: Date.now().toString(),
       content: text,
@@ -54,10 +56,13 @@ const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
     };
 
     savePost(newPost);
+    // Simulate network delay for smooth transition
+    await new Promise((resolve) => setTimeout(resolve, 500));
     onPostPublish(); // trigger reload in FeedPage
     setText(""); // clear input
     setEmoji("☺");
     setError("");
+    setIsSubmitting(false);
   };
 
   const toggleEmojiPicker = () => {
@@ -66,11 +71,11 @@ const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
 
   return (
     <div className="p-[8px] rounded-2xl bg-[#00000008]">
-      <div className="rounded-2xl shadow-sm bg-white p-2 w-full">
+      <div className="rounded-2xl shadow-sm bg-white p-2 w-full transition-all duration-200 ease-in-out">
         {/* Toolbar */}
         <div className="flex items-center justify-between gap-2 mx-2 my-1">
           {/* Scrollable Rich Text Toolbar */}
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar bg-[#00000008] px-2 py-2 rounded-xl flex-grow min-w-0">
+          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar bg-[#00000008] px-2 py-2 rounded-xl flex-grow min-w-0 transition-all duration-200">
             <select className="rounded-md px-3 py-1 bg-white text-gray-700 text-sm shadow-sm shrink-0">
               <option>Paragraph</option>
             </select>
@@ -115,13 +120,13 @@ const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
         <div className="relative flex items-start gap-2 px-4 py-3 text-gray-700">
           <span
             onClick={toggleEmojiPicker}
-            className="text-xl cursor-pointer hover:text-black flex items-start"
+            className="text-xl cursor-pointer hover:text-black flex items-start transition-colors duration-200"
           >
             {emoji}
           </span>
 
           {showEmojiPicker && (
-            <div className="absolute z-50 top-10 mt-2 left-0">
+            <div className="absolute z-50 top-10 mt-2 left-0 animate-fadeIn">
               <EmojiPicker
                 onSelect={(e) => {
                   setEmoji(e);
@@ -134,7 +139,7 @@ const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
           <div className="flex flex-grow">
             <textarea
               placeholder="How are you feeling today?"
-              className="flex-1 resize-none outline-none text-sm bg-transparent"
+              className="flex-1 resize-none outline-none text-sm bg-transparent transition-all duration-200 ease-in-out focus:text-gray-900"
               rows={3}
               value={text}
               onChange={(e) => {
@@ -144,7 +149,11 @@ const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
             />
           </div>
         </div>
-        {error && <div className="text-red-500 text-xs px-4 pb-1">{error}</div>}
+        <div className="h-5 px-4 pb-1">
+          {error && (
+            <div className="text-red-500 text-xs animate-slideIn">{error}</div>
+          )}
+        </div>
 
         {/* Footer icons */}
         <div className="flex items-center justify-between px-3 pb-2">
@@ -170,9 +179,11 @@ const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
             ))}
           </div>
           <div
-            className="cursor-pointer text-[#5057EA] hover:text-[#3e45c7]"
+            className={`cursor-pointer text-[#5057EA] hover:text-[#3e45c7] transition-all duration-200 transform ${
+              isSubmitting ? "scale-90 opacity-50" : "scale-100 opacity-100"
+            }`}
             onClick={() => {
-              handlePublish();
+              if (!isSubmitting) handlePublish();
             }}
           >
             <SendIcon />
