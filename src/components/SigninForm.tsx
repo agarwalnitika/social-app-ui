@@ -14,15 +14,57 @@ const SignInForm = ({ onSubmit }: SignInFormProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({
+    email: "",
+    password: "",
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const validateForm = () => {
+    const errors = {
+      email: "",
+      password: "",
+    };
+    let isValid = true;
+
+    if (!email) {
+      errors.email = "Email is required";
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      errors.email = "Please enter a valid email";
+      isValid = false;
+    }
+
+    if (!password) {
+      errors.password = "Password is required";
+      isValid = false;
+    }
+
+    setFieldErrors(errors);
+    return isValid;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const success = signIn(email, password);
-    if (success) {
-      onSubmit?.();
-      navigate("/");
-    } else {
-      setError("Invalid email or password.");
+    setError("");
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const success = await signIn(email, password);
+      if (success) {
+        onSubmit?.();
+        navigate("/");
+      } else {
+        setError("Invalid email or password.");
+      }
+    } catch {
+      setError("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -32,27 +74,36 @@ const SignInForm = ({ onSubmit }: SignInFormProps) => {
       subtitle="Sign in to access all the features on this app"
       submitText="Sign In"
       onSubmit={handleSubmit}
-      bottomText="Do not have and account?"
+      bottomText="Do not have an account?"
       bottomLinkText="Sign Up"
       bottomLinkHref="/signup"
       icon={<AuthIcon />}
       error={error}
+      isLoading={isLoading}
     >
       <FormInput
         type="email"
         title="Email or username"
         placeholder="Enter your email or username"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e) => {
+          setEmail(e.target.value);
+          setFieldErrors((prev) => ({ ...prev, email: "" }));
+        }}
         required
+        error={fieldErrors.email}
       />
       <FormInput
         type="password"
         title="Password"
         placeholder="Enter your password"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={(e) => {
+          setPassword(e.target.value);
+          setFieldErrors((prev) => ({ ...prev, password: "" }));
+        }}
         required
+        error={fieldErrors.password}
       />
     </Form>
   );
