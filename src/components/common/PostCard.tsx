@@ -1,4 +1,3 @@
-import React from "react";
 import CommentIcon from "../../assets/post/CommentIcon";
 import LikeIcon from "../../assets/post/LikeIcon";
 import ShareIcon from "../../assets/post/ShareIcon";
