@@ -1,18 +1,16 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Navbar from "./components/common/Navbar";
-import SignInForm from "./components/SigninForm";
-import SignUpForm from "./components/SignupForm";
+import Header from "./components/common/Header";
+import AuthForm from "./components/AuthForm";
 import Feed from "./pages/Feed";
 
 function App() {
   return (
     <Router>
-      <Navbar />
-
+      <Header />
       <Routes>
         <Route path="/" element={<Feed />} />
-        <Route path="/signin" element={<SignInForm />} />
-        <Route path="/signup" element={<SignUpForm />} />
+        <Route path="/signin" element={<AuthForm type="signIn" />} />
+        <Route path="/signup" element={<AuthForm type="signUp" />} />
       </Routes>
     </Router>
   );

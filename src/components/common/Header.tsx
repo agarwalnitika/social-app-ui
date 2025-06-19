@@ -4,22 +4,30 @@ import Logo from "../../assets/Logo";
 import AuthIcon from "../../assets/AuthIcon";
 import type { ReactNode, MouseEventHandler } from "react";
 
-// Reusable navigation button
-interface NavButtonProps {
+interface HeaderButtonProps {
   onClick: MouseEventHandler<HTMLButtonElement>;
-  children: ReactNode;
   className?: string;
+  buttonText: string;
+  icon?: ReactNode;
 }
-const NavButton = ({ onClick, children, className = "" }: NavButtonProps) => (
+const HeaderButton = ({
+  onClick,
+  className = "",
+  buttonText,
+  icon,
+}: HeaderButtonProps) => (
   <button
     onClick={onClick}
     className={`bg-transparent px-3 py-1 rounded cursor-pointer ${className}`}
   >
-    {children}
+    <div className="flex gap-2">
+      <span className="inline-flex text-sm font-semibold">{buttonText}</span>
+      {icon && <span className="inline-flex">{icon}</span>}
+    </div>
   </button>
 );
 
-const Navbar = () => {
+const Header = () => {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,34 +42,29 @@ const Navbar = () => {
       </Link>
       <div>
         {isAuthPage ? (
-          <NavButton onClick={() => navigate("/")}>Back to Home</NavButton>
+          <HeaderButton
+            onClick={() => navigate("/")}
+            buttonText="Back to Home"
+          />
         ) : user ? (
-          <NavButton
+          <HeaderButton
             onClick={() => {
               signOut();
               navigate("/");
             }}
-          >
-            <div className="flex gap-2">
-              <span className="inline-flex">Sign out</span>
-              <span className="inline-flex">
-                <AuthIcon />
-              </span>
-            </div>
-          </NavButton>
+            buttonText="Sign out"
+            icon={<AuthIcon width={20} height={20} />}
+          />
         ) : (
-          <NavButton onClick={() => navigate("/signin")}>
-            <div className="flex gap-2">
-              <span className="inline-flex">Login</span>
-              <span className="inline-flex">
-                <AuthIcon />
-              </span>
-            </div>
-          </NavButton>
+          <HeaderButton
+            onClick={() => navigate("/signin")}
+            buttonText="Login"
+            icon={<AuthIcon width={20} height={20} />}
+          />
         )}
       </div>
     </div>
   );
 };
 
-export default Navbar;
+export default Header;

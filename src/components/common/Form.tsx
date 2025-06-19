@@ -1,5 +1,5 @@
 import { type JSX, type ReactNode } from "react";
-import { Link } from "react-router-dom"; // Optional, depending on your routing
+import { Link } from "react-router-dom";
 
 interface FormProps {
   title: string;
@@ -14,6 +14,8 @@ interface FormProps {
   bottomLinkHref?: string;
   icon?: JSX.Element;
   isLoading?: boolean;
+  isModal?: boolean;
+  onBottomLinkClick?: () => void;
 }
 
 interface FormInputProps {
@@ -67,11 +69,20 @@ const Form = ({
   bottomLinkHref,
   icon,
   isLoading = false,
+  isModal = false,
+  onBottomLinkClick,
 }: FormProps) => {
+  const handleBottomLinkClick = (e: React.MouseEvent) => {
+    if (isModal && onBottomLinkClick) {
+      e.preventDefault();
+      onBottomLinkClick();
+    }
+  };
+
   return (
-    <div className="flex justify-center items-center px-4 animate-slideInFromBottom">
-      <div className="w-full max-w-md bg-gray-100 p-[8px] rounded-2xl shadow-xl border border-transparent">
-        <div className="w-full max-w-md bg-white px-12 py-7 rounded-2xl shadow-[#00000008] border border-gray-100">
+    <div className="flex items-center justify-center animate-slideInFromBottom px-4">
+      <div className="w-full   bg-gray-100 p-[8px] rounded-2xl border border-transparent">
+        <div className="w-full sm:w-[498px] bg-white px-6 py-7 sm:px-12 rounded-2xl shadow-[#00000008] border border-gray-100 overflow-y-auto">
           <form onSubmit={onSubmit}>
             <div className="text-center mb-16">
               {icon && (
@@ -117,11 +128,13 @@ const Form = ({
             </button>
           </form>
         </div>
+
         {bottomText && bottomLinkText && bottomLinkHref && (
           <div className="text-center mt-4 mb-2 text-sm text-gray-500 animate-fadeIn">
             {bottomText}{" "}
             <Link
               to={bottomLinkHref}
+              onClick={handleBottomLinkClick}
               className="text-blue-600 font-semibold hover:underline"
             >
               {bottomLinkText}

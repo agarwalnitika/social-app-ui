@@ -13,25 +13,24 @@ import TextUnderlineIcon from "../../assets/richText/TextUnderlineIcon";
 import SendIcon from "../../assets/SendIcon";
 import { useAuth } from "../../context/AuthContext";
 import { savePost, type Post } from "../../utils/postUtils";
-import SignInForm from "../SigninForm";
 import EmojiPicker from "./EmojiPicker";
 import { IconWithToast } from "./IconWithToast";
 import IconWrapper from "./IconWrapper";
-import Modal from "./Modal";
 import "../../index.css";
+import AuthModals from "./AuthModals";
 
 const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
   const [text, setText] = useState("");
   const [emoji, setEmoji] = useState("☺"); // default emoji
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [showSignIn, setShowSignIn] = useState(false);
+  const [authModal, setAuthModal] = useState<"signIn" | "signUp" | null>(null);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { user } = useAuth();
   const handlePublish = async () => {
     if (!user) {
-      setShowSignIn(true);
+      setAuthModal("signIn");
       return;
     }
     if (!text.trim()) {
@@ -189,9 +188,7 @@ const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
             <SendIcon />
           </div>
 
-          <Modal isOpen={showSignIn} onClose={() => setShowSignIn(false)}>
-            <SignInForm onSubmit={() => setShowSignIn(false)} />
-          </Modal>
+          <AuthModals open={authModal} onClose={() => setAuthModal(null)} />
         </div>
       </div>
     </div>
