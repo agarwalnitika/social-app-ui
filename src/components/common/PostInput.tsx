@@ -99,7 +99,11 @@ const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
           <div className="shrink-0 ml-2">
             <IconWithToast
               icon={
-                <IconWrapper bgColor="bg-[#FF000026]" disableInteraction>
+                <IconWrapper
+                  bgColor="bg-[#FF000026]"
+                  size="w-11 h-11"
+                  disableInteraction
+                >
                   <DeleteIcon />
                 </IconWrapper>
               }
