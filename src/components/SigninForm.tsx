@@ -40,6 +40,7 @@ const SignInForm = ({ onSubmit }: SignInFormProps) => {
     >
       <FormInput
         type="email"
+        title="Email or username"
         placeholder="Enter your email or username"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
@@ -47,6 +48,7 @@ const SignInForm = ({ onSubmit }: SignInFormProps) => {
       />
       <FormInput
         type="password"
+        title="Password"
         placeholder="Enter your password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}

@@ -17,6 +17,7 @@ interface FormProps {
 
 interface FormInputProps {
   type: string;
+  title: string;
   placeholder: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -25,6 +26,7 @@ interface FormInputProps {
 
 export const FormInput = ({
   type,
+  title,
   placeholder,
   value,
   onChange,
@@ -32,6 +34,7 @@ export const FormInput = ({
 }: FormInputProps) => {
   return (
     <div>
+      <p className="text-sm mb-[6px] font-bold ml-1">{title}</p>
       <input
         type={type}
         placeholder={placeholder}
@@ -59,11 +62,11 @@ const Form = ({
   return (
     <div className="flex justify-center items-center px-4">
       <div className="w-full max-w-md bg-gray-100 p-[8px] rounded-2xl shadow-xl border border-transparent">
-        <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-[#00000008] border border-gray-100">
+        <div className="w-full max-w-md bg-white px-12 py-7 rounded-2xl shadow-[#00000008] border border-gray-100">
           <form onSubmit={onSubmit}>
-            <div className="text-center mb-8">
+            <div className="text-center mb-16">
               {icon && (
-                <div className="flex justify-center mb-4">
+                <div className="flex justify-center mb-5">
                   <div className="bg-[#F8F8F8] p-3 rounded-full text-gray-600">
                     {icon}
                   </div>
@@ -85,7 +88,7 @@ const Form = ({
 
             <button
               type="submit"
-              className={`w-full mt-6 py-3 px-4 text-white font-semibold rounded-lg transition-colors duration-200 bg-[#5057EA] hover:bg-[#3e45c7] cursor-pointer`}
+              className={`w-full mt-6 py-3 px-4 text-white font-semibold rounded-lg transition-colors duration-200 bg-[#5057EA] hover:bg-[#3e45c7] cursor-pointer mb-5`}
             >
               {submitText}
             </button>

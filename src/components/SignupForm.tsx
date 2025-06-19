@@ -37,6 +37,7 @@ const SignUpForm = () => {
     >
       <FormInput
         type="email"
+        title="Email or username"
         placeholder="Enter your email or username"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
@@ -44,6 +45,7 @@ const SignUpForm = () => {
       />
       <FormInput
         type="password"
+        title="Password"
         placeholder="Enter your password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
@@ -52,6 +54,7 @@ const SignUpForm = () => {
       <FormInput
         type="password"
         placeholder="Enter your password again"
+        title="Repeat Password"
         value={repeatPassword}
         onChange={(e) => setRepeatPassword(e.target.value)}
         required
