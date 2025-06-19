@@ -13,9 +13,18 @@ interface PostCardProps {
   content: string;
   emoji?: string;
   timestamp: number;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
-const PostCard = ({ user, content, emoji, timestamp }: PostCardProps) => {
+const PostCard = ({
+  user,
+  content,
+  emoji,
+  timestamp,
+  className,
+  style,
+}: PostCardProps) => {
   const icons = {
     like: <LikeIcon />,
     comment: <CommentIcon />,
@@ -23,7 +32,10 @@ const PostCard = ({ user, content, emoji, timestamp }: PostCardProps) => {
   };
 
   return (
-    <div className="p-2 rounded-2xl bg-[#00000008]">
+    <div
+      className={`p-2 rounded-2xl bg-[#00000008] ${className}`}
+      style={style}
+    >
       <div className="bg-white rounded-2xl shadow-sm p-4 w-full">
         {/* Header */}
         <div className="flex items-center space-x-3 mb-3">

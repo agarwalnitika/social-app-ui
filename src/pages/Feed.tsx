@@ -6,45 +6,43 @@ import { samplePosts } from "../utils/sampleData";
 
 function Feed() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [visiblePosts, setVisiblePosts] = useState<Post[]>([]);
 
   const sortedPosts = posts.slice().sort((a, b) => b.createdAt - a.createdAt);
 
   const loadPosts = () => {
-    setPosts([...getAllPosts(), ...samplePosts]);
+    const allPosts = [...getAllPosts(), ...samplePosts];
+    setPosts(allPosts);
   };
 
   useEffect(() => {
     loadPosts();
   }, []);
 
+  useEffect(() => {
+    // Set a timeout to make the initial animation visible
+    const timer = setTimeout(() => {
+      setVisiblePosts(sortedPosts);
+    }, 100); // A small delay to ensure CSS is ready
+
+    return () => clearTimeout(timer);
+  }, [posts]);
+
   return (
     <div className="max-w-[550px] mx-auto space-y-6 py-8 px-4">
-      ̦ <PostInputBox onPostPublish={loadPosts} />
-      <PostCard
-        user={{
-          name: "Theresa Webb",
-          avatarUrl: "https://randomuser.me/api/portraits/women/44.jpg",
-        }}
-        content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..."
-        emoji="😉"
-        timestamp={1750368351779}
-      />
-      <PostCard
-        user={{
-          name: "Theresa Webb",
-          avatarUrl: "https://randomuser.me/api/portraits/women/44.jpg",
-        }}
-        content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua..."
-        emoji="😉"
-        timestamp={1750348387291}
-      />
-      {sortedPosts.map((post) => (
+      <PostInputBox onPostPublish={loadPosts} />
+      {visiblePosts.map((post, index) => (
         <PostCard
           key={post.id}
           user={post.user}
           content={post.content}
           timestamp={post.createdAt}
           emoji={post.emoji}
+          className="animate-slideInFromBottom"
+          style={{
+            animationDelay: `${index * 120}ms`,
+            animationFillMode: "backwards",
+          }}
         />
       ))}
     </div>
