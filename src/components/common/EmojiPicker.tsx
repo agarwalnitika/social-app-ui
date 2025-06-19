@@ -13,7 +13,7 @@ const EmojiPicker = ({ onSelect }: EmojiPickerProps) => {
   );
 
   return (
-    <div className="p-[8px] rounded-2xl bg-[#00000008] shadow-2xl">
+    <div className="p-[8px] rounded-2xl bg-gray-100 shadow-2xl">
       {/* Sticky Search Bar */}
       <div className=" pb-2 sticky top-0 z-10">
         <input

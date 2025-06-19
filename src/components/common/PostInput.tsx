@@ -1,7 +1,6 @@
 import { useState } from "react";
 import CameraIcon from "../../assets/CameraIcon";
 import DeleteIcon from "../../assets/DeleteIcon";
-import SendIcon from "../../assets/SendIcon";
 import MicIcon from "../../assets/MicIcon";
 import PlusIcon from "../../assets/PlusIcon";
 import ListOrderedIcon from "../../assets/richText/ListOrderedIcon";
@@ -11,21 +10,36 @@ import ScriptIcon from "../../assets/richText/ScriptIcon";
 import TextBoldIcon from "../../assets/richText/TextBoldIcon";
 import TextItalicIcon from "../../assets/richText/TextItalicIcon";
 import TextUnderlineIcon from "../../assets/richText/TextUnderlineIcon";
+import SendIcon from "../../assets/SendIcon";
 import { useAuth } from "../../context/AuthContext";
 import { savePost, type Post } from "../../utils/postUtils";
+import SignInForm from "../SigninForm";
 import EmojiPicker from "./EmojiPicker";
 import { IconWithToast } from "./IconWithToast";
 import IconWrapper from "./IconWrapper";
-// import { Smile, Plus, Mic, Camera, Send, Trash2 } from "lucide-react";
+import Modal from "./Modal";
 
 const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
   const [text, setText] = useState("");
   const [emoji, setEmoji] = useState("☺"); // default emoji
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [showSignIn, setShowSignIn] = useState(false);
+  const [error, setError] = useState("");
 
   const { user } = useAuth();
   const handlePublish = () => {
-    if (!text.trim() || !user) return;
+    if (!user) {
+      setShowSignIn(true);
+      return;
+    }
+    if (!text.trim()) {
+      setError("Please enter something before posting.");
+      return;
+    }
+    if (emoji === "☺") {
+      setError("Please choose an emoji.");
+      return;
+    }
 
     const newPost: Post = {
       id: Date.now().toString(),
@@ -42,6 +56,7 @@ const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
     onPostPublish(); // trigger reload in FeedPage
     setText(""); // clear input
     setEmoji("☺");
+    setError("");
   };
 
   const toggleEmojiPicker = () => {
@@ -52,7 +67,6 @@ const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
     <div className="p-[8px] rounded-2xl bg-[#00000008]">
       <div className="rounded-2xl shadow-sm bg-white p-2 w-full">
         {/* Toolbar */}
-
         <div className="flex items-center gap-2 justify-between  mx-2 my-1">
           <div className="flex items-center gap-2 px-2 py-2 rounded-xl bg-[#00000008] ">
             <select className="rounded-md px-3 py-1 bg-white text-gray-700 text-sm shadow-sm">
@@ -70,7 +84,9 @@ const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
               <IconWithToast
                 key={idx}
                 icon={
-                  <IconWrapper bgColor="bg-transparent">{icon}</IconWrapper>
+                  <IconWrapper bgColor="bg-transparent" disableInteraction>
+                    {icon}
+                  </IconWrapper>
                 }
               />
             ))}
@@ -87,27 +103,38 @@ const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
 
         {/* Input */}
         <div className="relative flex items-start gap-2 px-4 py-3 text-gray-700">
-          <IconWrapper onClick={toggleEmojiPicker}>
-            <span className="text-xl">{emoji}</span>
-          </IconWrapper>
+          <span
+            onClick={toggleEmojiPicker}
+            className="text-xl cursor-pointer hover:text-black flex items-start"
+          >
+            {emoji}
+          </span>
+
           {showEmojiPicker && (
             <div className="absolute z-50 top-10 mt-2 left-0">
               <EmojiPicker
                 onSelect={(e) => {
                   setEmoji(e);
                   setShowEmojiPicker(false);
+                  if (error) setError("");
                 }}
               />
             </div>
           )}
-          <textarea
-            placeholder="How are you feeling today?"
-            className="flex-1 resize-none outline-none text-sm bg-transparent"
-            rows={3}
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-          />
+          <div className="flex flex-grow">
+            <textarea
+              placeholder="How are you feeling today?"
+              className="flex-1 resize-none outline-none text-sm bg-transparent"
+              rows={3}
+              value={text}
+              onChange={(e) => {
+                setText(e.target.value);
+                if (error) setError("");
+              }}
+            />
+          </div>
         </div>
+        {error && <div className="text-red-500 text-xs px-4 pb-1">{error}</div>}
 
         {/* Footer icons */}
         <div className="flex items-center justify-between px-3 pb-2">
@@ -134,10 +161,16 @@ const PostInputBox = ({ onPostPublish }: { onPostPublish: () => void }) => {
           </div>
           <div
             className="cursor-pointer text-[#5057EA] hover:text-[#3e45c7]"
-            onClick={() => handlePublish()}
+            onClick={() => {
+              handlePublish();
+            }}
           >
             <SendIcon />
           </div>
+
+          <Modal isOpen={showSignIn} onClose={() => setShowSignIn(false)}>
+            <SignInForm onSubmit={() => setShowSignIn(false)} />
+          </Modal>
         </div>
       </div>
     </div>

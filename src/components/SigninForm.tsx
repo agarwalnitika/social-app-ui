@@ -4,7 +4,11 @@ import { useAuth } from "../context/AuthContext";
 import Form, { FormInput } from "../components/common/Form";
 import AuthIcon from "../assets/AuthIcon";
 
-const SignInForm = () => {
+interface SignInFormProps {
+  onSubmit?: () => void;
+}
+
+const SignInForm = ({ onSubmit }: SignInFormProps) => {
   const { signIn } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -15,6 +19,7 @@ const SignInForm = () => {
     e.preventDefault();
     const success = signIn(email, password);
     if (success) {
+      onSubmit?.();
       navigate("/");
     } else {
       setError("Invalid email or password.");

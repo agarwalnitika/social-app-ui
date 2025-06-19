@@ -1,6 +1,3 @@
-interface IconProps {
-  fill?: string;
-}
 const SendIcon = () => {
   return (
     <svg
@@ -17,7 +14,7 @@ const SendIcon = () => {
         />
       </g>
       <defs>
-        <clipPath id="clip0_1_292">
+        <clipPath id="clip0_1_292̦">
           <rect width="24" height="24" fill="white" />
         </clipPath>
       </defs>

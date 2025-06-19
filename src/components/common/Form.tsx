@@ -50,30 +50,15 @@ const Form = ({
   onSubmit,
   children,
   submitText,
-  submitButtonColor = "blue",
   error,
   bottomText,
   bottomLinkText,
   bottomLinkHref,
   icon,
 }: FormProps) => {
-  const getButtonColor = () => {
-    switch (submitButtonColor) {
-      case "green":
-        return "bg-green-600 hover:bg-green-700";
-      case "red":
-        return "bg-red-600 hover:bg-red-700";
-      default:
-        return "bg-blue-600 hover:bg-blue-700";
-    }
-  };
-
   return (
-    <div className="flex justify-center items-center min-h-screen px-4">
-      <div
-        className="w-full max-w-md bg-white p-[8px] rounded-2xl shadow-xl border border-transparent"
-        style={{ backgroundColor: "#00000008" }}
-      >
+    <div className="flex justify-center items-center px-4">
+      <div className="w-full max-w-md bg-gray-100 p-[8px] rounded-2xl shadow-xl border border-transparent">
         <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-[#00000008] border border-gray-100">
           <form onSubmit={onSubmit}>
             <div className="text-center mb-8">
@@ -100,7 +85,7 @@ const Form = ({
 
             <button
               type="submit"
-              className={`w-full mt-6 py-3 px-4 text-white font-semibold rounded-lg transition-colors duration-200 ${getButtonColor()}`}
+              className={`w-full mt-6 py-3 px-4 text-white font-semibold rounded-lg transition-colors duration-200 bg-[#5057EA] hover:bg-[#3e45c7] cursor-pointer`}
             >
               {submitText}
             </button>
