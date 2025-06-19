@@ -72,7 +72,7 @@ const Form = ({
     <div className="flex justify-center items-center min-h-screen px-4">
       <div
         className="w-full max-w-md bg-white p-[8px] rounded-2xl shadow-xl border border-transparent"
-        style={{ backgroundColor: "#EBEBEB" }}
+        style={{ backgroundColor: "#00000008" }}
       >
         <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-[#00000008] border border-gray-100">
           <form onSubmit={onSubmit}>

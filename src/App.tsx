@@ -1,13 +1,14 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import Navbar from "./components/common/Navbar";
 import Feed from "./pages/Feed";
 import SignIn from "./pages/Signin";
 import SignUp from "./pages/Signup";
-import Navbar from "./components/common/Navbar";
 
 function App() {
   return (
     <Router>
       <Navbar />
+
       <Routes>
         <Route path="/" element={<Feed />} />
         <Route path="/signin" element={<SignIn />} />

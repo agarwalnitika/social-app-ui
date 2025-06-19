@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../auth/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import Form, { FormInput } from "../components/common/Form";
 import AuthIcon from "../assets/AuthIcon";
 
