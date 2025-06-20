@@ -10,9 +10,9 @@ const LogoIcon = () => {
       <path
         d="M22.6667 17H19.8333M2.83333 17V17C2.83333 23.2592 7.90745 28.3333 14.1667 28.3333H19.8333C26.0926 28.3333 31.1667 23.2592 31.1667 17V17C31.1667 10.7408 26.0925 5.66667 19.8333 5.66667H14.1667C7.90744 5.66667 2.83333 10.7408 2.83333 17Z"
         stroke="black"
-        stroke-width="3.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="3.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
