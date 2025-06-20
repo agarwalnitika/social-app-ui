@@ -1,6 +1,6 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import Header from "./components/common/Header";
 import AuthForm from "./components/AuthForm";
+import Header from "./components/common/Header";
 import Feed from "./pages/Feed";
 
 function App() {

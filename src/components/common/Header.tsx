@@ -1,8 +1,8 @@
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
-import Logo from "../../assets/Logo";
+import { type MouseEventHandler, type ReactNode } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import AuthIcon from "../../assets/AuthIcon";
-import type { ReactNode, MouseEventHandler } from "react";
+import Logo from "../../assets/Logo";
+import { useAuth } from "../../context/AuthContext";
 
 interface HeaderButtonProps {
   onClick: MouseEventHandler<HTMLButtonElement>;
@@ -36,7 +36,9 @@ const Header = () => {
     location.pathname === "/signin" || location.pathname === "/signup";
 
   return (
-    <div className="flex justify-between p-4 mx-7">
+    <div
+      className={`flex justify-between p-4 mx-7 bg-white sticky top-0 z-9999`}
+    >
       <Link to="/">
         <Logo />
       </Link>

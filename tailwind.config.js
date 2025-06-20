@@ -8,6 +8,9 @@ export default {
       fontFamily: {
         sans: ["Inter", ...defaultTheme.fontFamily.sans],
       },
+      zIndex: {
+        9999: "9999",
+      },
     },
   },
   plugins: [],

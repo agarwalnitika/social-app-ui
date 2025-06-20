@@ -85,6 +85,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signOut = () => {
     setUser(null);
     clearCurrentUser();
+    window.location.reload();
   };
 
   return (
