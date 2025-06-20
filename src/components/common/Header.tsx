@@ -36,9 +36,7 @@ const Header = () => {
     location.pathname === "/signin" || location.pathname === "/signup";
 
   return (
-    <div
-      className={`flex justify-between p-4 mx-7 bg-white sticky top-0 z-9999`}
-    >
+    <div className={`flex justify-between p-4 mx-7 bg-white sticky top-0 z-50`}>
       <Link to="/">
         <Logo />
       </Link>
